@@ -13,6 +13,10 @@ message(${Vulkan_LIBRARIES})
 set(SOURCES
     main.cpp
 )
+# add AURORA_PLATFORM_WINDOWS for Windows
+if(WIN32)
+	add_definitions(-DAURORA_PLATFORM_WINDOWS)
+endif()
 
 # Create the executable
 add_executable(${PROJECT_NAME} ${SOURCES})
