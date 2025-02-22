@@ -11,14 +11,14 @@ namespace aurora::core
 
 	}
 
-	void log(const char* format, ...) noexcept
+	void log(String format, ...) noexcept
 	{
 		char buffer[4096] = { };
 		char* ptr = buffer;
 
 		va_list args;
 		va_start(args, format);
-		int n = vsnprintf(ptr, sizeof(buffer), format, args);
+		int n = vsnprintf(ptr, sizeof(buffer), format.data, args);
 		va_end(args);
 
 		buffer[n] = '\n';
