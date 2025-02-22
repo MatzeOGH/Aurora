@@ -31,7 +31,7 @@ struct Win64WindowCreateInfo {
     LPVOID lpParam;
 };
 
-namespace Aurora::platform
+namespace Aurora::Platform
 {
 	void init(const PlatformCreateInfo& platformCreateInfo)
 	{

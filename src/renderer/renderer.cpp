@@ -234,7 +234,7 @@ void Aurora::Renderer::init(const RendererCreateInfo& rendererCreateInfo, Arena*
 	device->init(scratch);
 }
 
-void Aurora::Renderer::RegisterWindow(addptr window)
+void Aurora::Renderer::RegisterWindow(addptr handle)
 {
 
 }

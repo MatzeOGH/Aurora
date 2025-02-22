@@ -61,7 +61,7 @@ struct Win64WindowCreateInfo {
     LPVOID lpParam;
 };
 
-Aurora::addptr Aurora::platform::createWindow(const WindowCreateInfo& windowCreateInfo)
+Aurora::Window Aurora::Platform::createWindow(const WindowCreateInfo& windowCreateInfo)
 {
     // create window class
     WNDCLASSEXW windowClass = {
@@ -89,10 +89,10 @@ Aurora::addptr Aurora::platform::createWindow(const WindowCreateInfo& windowCrea
 
     HWND windowHandle = (HWND)SendMessageW(serviceWindow, CREATE_AURORA_WINDOW, (WPARAM)&win64CreateInfo, 0);
 
-    return (addptr)windowHandle;
+    return { (addptr)windowHandle };
 }
 
-Aurora::i32 Aurora::platform::getWindowCount()
+Aurora::i32 Aurora::Platform::getWindowCount()
 {
     int windowCount = 0;
     for (HWND window = FindWindowExW(0, 0, WINDOW_CLASS_NAME, 0);

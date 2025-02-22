@@ -2,7 +2,7 @@
 
 #include "core/string.h"
 
-namespace Aurora::platform
+namespace Aurora::Platform
 {
 	struct PlatformCreateInfo{
 		bool enableConsole{ true };

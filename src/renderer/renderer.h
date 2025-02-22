@@ -9,7 +9,7 @@ namespace Aurora::Renderer {
 
 	void init(const RendererCreateInfo& rendererCreateInfo, Arena* persistane, Arena scratch);
 
-	void RegisterWindow(addptr window);
+	void RegisterWindow(addptr handle);
 
 	void shutdown();
 

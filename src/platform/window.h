@@ -2,7 +2,7 @@
 
 #include "core/string.h"
 
-namespace Aurora::platform
+namespace Aurora
 {
 	struct WindowCreateInfo {
 		String title{};
@@ -11,8 +11,17 @@ namespace Aurora::platform
 		bool fullscreen{ false };
 	};
 
-	addptr createWindow(const WindowCreateInfo& windowCreateInfo);
+	struct Window
+	{
+		addptr handle;
+	};
 
-	i32 getWindowCount();
+	namespace Platform
+	{
+
+		Window createWindow(const WindowCreateInfo& windowCreateInfo);
+
+		i32 getWindowCount();
+	}
 
 }
