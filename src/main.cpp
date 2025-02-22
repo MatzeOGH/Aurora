@@ -1,8 +1,28 @@
 #include <iostream>
 
-int main() {
-    std::cout << "Welcome to the Aurora project!" << std::endl;
-    // Add your application logic here
+#include <vulkan/vulkan.h>
 
-    return 0;
+#include "platform/platform.h"
+#include "renderer/renderer.h"
+
+#include "core/arena.h"
+
+
+void AuroraMain() {
+	Arena persistent = Arena::makeArena(100_MiB);
+	Arena scratch = Arena::makeArena(10_MiB);
+
+	// init the platform layer
+	aurora::platform::init({ .enableConsole = true });
+
+	aurora::renderer::init({}, &persistent, scratch);
+
+	do {
+
+	} while (true);
+
+	aurora::renderer::shutdown();
+
+	Arena::destroyArena(scratch);
+	Arena::destroyArena(persistent);
 }

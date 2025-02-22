@@ -1,5 +1,7 @@
 #pragma once
 
+#include "core/string.h"
+
 namespace aurora::platform
 {
 	struct PlatformCreateInfo{
@@ -9,5 +11,5 @@ namespace aurora::platform
 	void init(const PlatformCreateInfo& platformCreateInfo);
 
 	// launch a process
-	void launchProcess(const char* path);
+	void launchProcess(String path);
 }
