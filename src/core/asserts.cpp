@@ -23,6 +23,7 @@ extern "C" {
 
 void aurora::core::reportAssert(const char* condition, const char* file, int line)
 {
+#ifdef AURORA_PLATFORM_WINDOWS
 	char msg[4092];
 	sprintf_s(msg, 4092, "%s(%d): Assertion failed:\n %s\n", file, line, condition);
 
@@ -35,5 +36,6 @@ void aurora::core::reportAssert(const char* condition, const char* file, int lin
 		::MessageBoxA(nullptr, msg, "Assertion Failed", MB_OK | MB_ICONERROR);
 		::TerminateProcess(GetCurrentProcess(), 0);
 	}
+#endif // AURORA_PLATFORM_WINDOWS
 
 }

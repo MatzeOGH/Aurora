@@ -11,7 +11,7 @@
 
 namespace aurora::core
 {
-	void reportAssert(const char* condition, const char* file, int line);
+	[[noreturn]] void reportAssert(const char* condition, const char* file, int line);
 }
 
 #define ASSERT(expr)	\
