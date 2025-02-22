@@ -8,6 +8,7 @@
 // TODO: remove vk_enum_string_helper.h 
 #include <vulkan/vk_enum_string_helper.h> // vk code to string
 
+using namespace Aurora;
 
 VkPhysicalDevice selectPhysicalDevice(VkInstance vkInstance, Arena scratch)
 {

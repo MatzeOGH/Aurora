@@ -9,13 +9,16 @@
 #include "core/arena.h"
 
 
+namespace Aurora {
+
+
 void AuroraMain() {
 	Arena persistent = Arena::makeArena(100_MiB);
 	Arena scratch = Arena::makeArena(10_MiB);
 
 	// init the platform layer
 	Aurora::platform::init({ .enableConsole = true });
-	Aurora::renderer::init({}, &persistent, scratch);
+	Aurora::Renderer::init({}, &persistent, scratch);
 
 	Aurora::platform::createWindow({});
 
@@ -26,8 +29,10 @@ void AuroraMain() {
 		frame++;
 	} while (Aurora::platform::getWindowCount() > 0);
 
-	Aurora::renderer::shutdown();
+	Aurora::Renderer::shutdown();
 
 	Arena::destroyArena(scratch);
 	Arena::destroyArena(persistent);
+}
+
 }

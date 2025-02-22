@@ -127,13 +127,15 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 }
 
-extern void AuroraMain();
+namespace Aurora {
+    extern void AuroraMain();
+}
 
 // this is the main routine of a Win64 application
 DWORD WINAPI mainThread(LPVOID Param) {
     serviceWindow = (HWND)Param;
 
-    AuroraMain();
+    Aurora::AuroraMain();
 
     ExitProcess(0);
 }

@@ -5,6 +5,7 @@
 
 #include <initializer_list>
 
+namespace Aurora {
 
 
 // Span is a none owning view of a contiguous sequence of objects
@@ -36,3 +37,5 @@ struct Span
 		return data + size;
 	}
 };
+
+}

@@ -2,7 +2,7 @@
 
 #include "core/arena.h"
 
-namespace Aurora::renderer {
+namespace Aurora::Renderer {
 
 	struct RendererCreateInfo {
 	};

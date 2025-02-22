@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-namespace Aurora::core
+namespace Aurora
 {
 
 	void init(i32 bufferSize)
@@ -27,4 +27,4 @@ namespace Aurora::core
 		fwrite(buffer, sizeof(char), n+1, stdout);
 		fflush(stdout);
 	}
-} // namespace aurora::core
+} // namespace aurora

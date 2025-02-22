@@ -9,7 +9,7 @@
 #endif
 
 
-namespace Aurora::core
+namespace Aurora
 {
 	[[noreturn]] void reportAssert(const char* condition, const char* file, int line);
 }
@@ -18,7 +18,7 @@ namespace Aurora::core
 do{						\
 	if (!(expr))		\
 	{					\
-		Aurora::core::reportAssert(#expr, __FILE__, __LINE__);	\
+		Aurora::reportAssert(#expr, __FILE__, __LINE__);	\
 		HALT();			\
 	}					\
 } while (0)

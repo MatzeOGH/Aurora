@@ -8,6 +8,8 @@
 
 
 // TODO: remove memory management(new free) form the arena
+namespace Aurora {
+
 
 struct Arena {
 	char* begin{};
@@ -53,3 +55,4 @@ struct Arena {
 	}
 };
 
+}
