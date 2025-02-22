@@ -1,6 +1,7 @@
 #include "platform.h"
 
 #include "core/asserts.h"
+#include "core/logger.h"
 
 #include <cstdio>
 #include <Windows.h>
@@ -13,25 +14,65 @@ HWND serviceWindow;
 static LRESULT __stdcall serviceWndProc(HWND Window, UINT Message, WPARAM WParam, LPARAM LParam);
 static DWORD WINAPI mainThread(LPVOID Param);
 
+#define CREATE_AURORA_WINDOW (WM_USER + 0x1337)
+#define DESTROY_AURORA_WINDOW (WM_USER + 0x1338)
+struct Win64WindowCreateInfo {
+    DWORD dwExStyle;
+    LPCWSTR lpClassName;
+    LPCWSTR lpWindowName;
+    DWORD dwStyle;
+    int X;
+    int Y;
+    int nWidth;
+    int nHeight;
+    HWND hWndParent;
+    HMENU hMenu;
+    HINSTANCE hInstance;
+    LPVOID lpParam;
+};
 
-namespace aurora::platform
+namespace Aurora::platform
 {
 	void init(const PlatformCreateInfo& platformCreateInfo)
 	{
 #ifdef AURORA_PLATFORM_WINDOWS
 		if (true == platformCreateInfo.enableConsole) {
             AllocConsole();
-            freopen("CONOUT$", "w", stdout);
-            freopen("CONOUT$", "w", stderr);
-            freopen("CONIN$", "r", stdin);
-
+            if (freopen("CONOUT$", "w", stdout) == nullptr) {
+                // Handle error
+            }
+            if (freopen("CONOUT$", "w", stderr) == nullptr) {
+                // Handle error
+            }
+            if (freopen("CONIN$", "r", stdin) == nullptr) {
+                // Handle error
+            }
 		}
 #else
 		static_assert(false, "init is only supported on Windows");
 #endif
 	}
 
-	// launch a process
+
+    // main thread loop
+    void update()
+    {
+        // iterate over events send by service window
+        MSG msg{};
+        while (PeekMessage(&msg, 0, 0, 0, PM_REMOVE)) {
+            switch (msg.message) {
+            case WM_CLOSE: {
+                SendMessageW(serviceWindow, DESTROY_AURORA_WINDOW, msg.wParam, 0);
+            } break;
+            }
+        }
+
+        //ImGui_ImplWin32_NewFrame();
+        //ImGui::NewFrame();  // new frame
+
+    }
+
+    // launch a process
 	void launchProcess(String path)
 	{
 #ifdef AURORA_PLATFORM_WINDOWS
@@ -42,8 +83,8 @@ namespace aurora::platform
 	}
 }
 
-int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
-
+int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+{
     WNDCLASSEXW wc = {
         .cbSize = sizeof(wc),
         .lpfnWndProc = serviceWndProc,
@@ -74,11 +115,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
             (msg.message == WM_QUIT) || (msg.message == WM_SIZE)) {
             PostThreadMessageW(mainThreadId, msg.message, msg.wParam, msg.lParam);
         }
+        else if(msg.message == WM_CHAR) {
+            LOG("WM_CHAR main");
+        }
         else {
             DispatchMessageW(&msg);
         }
 
-        Sleep(10);
+        //Sleep(10);
     }
 
 }
@@ -108,7 +152,6 @@ LRESULT CALLBACK serviceWndProc(HWND Window, UINT Message, WPARAM WParam,
     LRESULT Result = 0;
 
     switch (Message) {
-        /*
     case CREATE_AURORA_WINDOW: {
         Win64WindowCreateInfo* createInfo = (Win64WindowCreateInfo*)WParam;
         Result = (LRESULT)CreateWindowExW(
@@ -141,9 +184,10 @@ LRESULT CALLBACK serviceWndProc(HWND Window, UINT Message, WPARAM WParam,
     } break;
 
     case DESTROY_AURORA_WINDOW: {
-        DestroyWindow((HWND)WParam);
+        if (DestroyWindow((HWND)WParam) == 0) {
+            LOG("failed to close window");
+        }
     } break;
-        */
     default: {
         Result = DefWindowProcW(Window, Message, WParam, LParam);
     } break;

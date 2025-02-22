@@ -2,13 +2,15 @@
 
 #include "core/string.h"
 
-namespace aurora::platform
+namespace Aurora::platform
 {
 	struct PlatformCreateInfo{
 		bool enableConsole{ true };
 	};
 
-	void init(const PlatformCreateInfo& platformCreateInfo);
+	void init(const PlatformCreateInfo& platformCreateInfo); 
+
+	void update();
 
 	// launch a process
 	void launchProcess(String path);
