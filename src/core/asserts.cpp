@@ -21,7 +21,7 @@ extern "C" {
 
 
 
-void aurora::core::reportAssert(const char* condition, const char* file, int line)
+void Aurora::core::reportAssert(const char* condition, const char* file, int line)
 {
 #ifdef AURORA_PLATFORM_WINDOWS
 	char msg[4092];

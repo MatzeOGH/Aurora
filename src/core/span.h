@@ -21,17 +21,17 @@ struct Span
 
 	constexpr ~Span() noexcept = default;
 
-	const T& operator[](i32 index) const noexcept
+	inline const T& operator[](i32 index) const noexcept
 	{
 		return data[index];
 	}
 
-	constexpr const T* begin() const noexcept
+	inline constexpr const T* begin() const noexcept
 	{
 		return data;
 	}
 
-	constexpr const T* end() const noexcept
+	inline constexpr const T* end() const noexcept
 	{
 		return data + size;
 	}

@@ -18,4 +18,7 @@ using f64 = double;
 
 using NullptrType = decltype(nullptr); // taken from <cstddef>
 
+using ptrdiff = decltype(static_cast<int*>(nullptr) - static_cast<int*>(nullptr));
+using addptr = ptrdiff; // should be the same as ptr diff
+
 

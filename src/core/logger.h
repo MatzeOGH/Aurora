@@ -4,7 +4,7 @@
 #include "core/string.h"
 
 
-namespace aurora::core
+namespace Aurora::core
 {
 	void init(i32 bufferSize);
 
@@ -12,4 +12,4 @@ namespace aurora::core
 
 } // namespace aurora::core
 
-#define LOG(format, ...) aurora::core::log(format, ##__VA_ARGS__);
+#define LOG(format, ...) Aurora::core::log(format, ##__VA_ARGS__);

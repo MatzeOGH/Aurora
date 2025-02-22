@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-namespace aurora::core
+namespace Aurora::core
 {
 
 	void init(i32 bufferSize)
