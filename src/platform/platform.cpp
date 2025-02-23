@@ -83,7 +83,7 @@ namespace Aurora::Platform
 	}
 }
 
-int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+void engineEntry()
 {
     WNDCLASSEXW wc = {
         .cbSize = sizeof(wc),
@@ -124,7 +124,16 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
         //Sleep(10);
     }
+}
 
+int main()
+{
+    engineEntry();
+}
+
+int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+{
+    engineEntry();
 }
 
 namespace Aurora {
