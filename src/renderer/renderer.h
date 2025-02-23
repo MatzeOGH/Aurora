@@ -13,6 +13,6 @@ namespace Aurora::Renderer {
 	void registerWindow(Aurora::Window window);
 	void unregisterWindow(Aurora::Window window);
 
-	void shutdown();
+	void shutdown(Arena scratch);
 
 } // namespace aurora::renderer
