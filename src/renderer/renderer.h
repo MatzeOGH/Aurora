@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/arena.h"
+#include "platform/window.h"
 
 namespace Aurora::Renderer {
 
@@ -9,7 +10,8 @@ namespace Aurora::Renderer {
 
 	void init(const RendererCreateInfo& rendererCreateInfo, Arena* persistane, Arena scratch);
 
-	void RegisterWindow(addptr handle);
+	void registerWindow(Aurora::Window window);
+	void unregisterWindow(Aurora::Window window);
 
 	void shutdown();
 

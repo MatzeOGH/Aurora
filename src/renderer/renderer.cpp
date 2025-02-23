@@ -5,10 +5,18 @@
 #include "core/string.h"
 #include "core/span.h"
 
+#include "platform/window.h"
+
 // TODO: remove vk_enum_string_helper.h 
 #include <vulkan/vk_enum_string_helper.h> // vk code to string
 
 using namespace Aurora;
+
+namespace Aurora {
+	VkSurfaceKHR createSurface(VkInstance instance, struct Window window);
+	VkBool32 queryQueueFamilyPresentationSupport(VkPhysicalDevice physicalDevice, u32 queueFamilyIndex);
+}
+
 
 VkPhysicalDevice selectPhysicalDevice(VkInstance vkInstance, Arena scratch)
 {
@@ -52,9 +60,9 @@ VkInstance getVkInstance()
 #ifdef AURORA_PLATFORM_WINDOWS
 		VK_KHR_WIN32_SURFACE_EXTENSION_NAME,
 #endif // AURORA_PLATFORM_WINDOWS
-#ifdef _DEBUG
+//#ifdef _DEBUG
 		VK_EXT_DEBUG_UTILS_EXTENSION_NAME,
-#endif // _DEBUG
+//#endif // _DEBUG
 		VK_EXT_SURFACE_MAINTENANCE_1_EXTENSION_NAME,
 		VK_KHR_GET_SURFACE_CAPABILITIES_2_EXTENSION_NAME,
 	};
@@ -95,6 +103,16 @@ u32 getQueueFamilyIndex(VkPhysicalDevice physicalDevice, u32 flags, Arena scratc
 	for (u32 i = 0; i < queueFamilyCount; i++) {
 		if ((queueFamilyProperties[i].queueFlags & flags) == flags)
 		{
+			//TODO: check if using the same function for all queues is problematic
+			// if checking for graphics queue check if it support presentation too
+			if (flags & VK_QUEUE_GRAPHICS_BIT) {
+				// check for surface support
+				VkBool32 surfaceSupported = queryQueueFamilyPresentationSupport(physicalDevice, i);
+				if (surfaceSupported == VK_TRUE) {
+					return i;
+				}
+			}
+
 			return i;
 		}
 	}
@@ -211,9 +229,14 @@ struct VulkanDevice
 
 };
 
+VkDebugUtilsMessengerEXT debugUtilsMessengerEXT{};
+
+VkSurfaceKHR surface{};
+
 void VulkanDevice::init(Arena scratch) 
 {
 	instance = getVkInstance();
+
 	physicalDevice = selectPhysicalDevice(instance, scratch);
 	device = createLogicalDevice(instance, physicalDevice, { VK_KHR_SWAPCHAIN_EXTENSION_NAME, VK_EXT_SWAPCHAIN_MAINTENANCE_1_EXTENSION_NAME, VK_EXT_SHADER_OBJECT_EXTENSION_NAME }, scratch);
 }
@@ -225,6 +248,7 @@ void VulkanDevice::destroy()
 }
 
 // vulkan device
+// TODO: how do we keep the central device available to other parts of the code base
 VulkanDevice* device;
 
 
@@ -234,9 +258,16 @@ void Aurora::Renderer::init(const RendererCreateInfo& rendererCreateInfo, Arena*
 	device->init(scratch);
 }
 
-void Aurora::Renderer::RegisterWindow(addptr handle)
+void Aurora::Renderer::registerWindow(Window window)
 {
+	surface = createSurface(device->instance, window);
+}
 
+void Aurora::Renderer::unregisterWindow(Aurora::Window window)
+{
+	if (surface != VK_NULL_HANDLE) {
+		vkDestroySurfaceKHR(device->instance, surface, nullptr);
+	}
 }
 
 void Aurora::Renderer::shutdown()
