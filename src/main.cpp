@@ -11,28 +11,28 @@
 
 namespace Aurora {
 
+	void AuroraMain() {
+		Arena persistent = Arena::makeArena(100_MiB);
+		Arena scratch = Arena::makeArena(10_MiB);
 
-void AuroraMain() {
-	Arena persistent = Arena::makeArena(100_MiB);
-	Arena scratch = Arena::makeArena(10_MiB);
+		// init the platform layer
+		Platform::init({ .enableConsole = true });
+		Renderer::init({}, &persistent, scratch);
 
-	// init the platform layer
-	Aurora::platform::init({ .enableConsole = true });
-	Aurora::Renderer::init({}, &persistent, scratch);
+		Window window = Platform::createWindow({});
+		Renderer::registerWindow(window);
 
-	Aurora::platform::createWindow({});
+		i32 frame = 0;
+		do {
+			Platform::update();
+			frame++;
+		} while (Platform::getWindowCount() > 0);
 
-	i32 frame = 0;
-	do {
-		Aurora::platform::update();
-		//LOG("frame %d", frame);
-		frame++;
-	} while (Aurora::platform::getWindowCount() > 0);
+		Renderer::unregisterWindow(window);
+		Renderer::shutdown(scratch);
 
-	Aurora::Renderer::shutdown();
-
-	Arena::destroyArena(scratch);
-	Arena::destroyArena(persistent);
-}
+		Arena::destroyArena(scratch);
+		Arena::destroyArena(persistent);
+	}
 
 }
