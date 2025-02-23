@@ -92,6 +92,11 @@ Aurora::Window Aurora::Platform::createWindow(const WindowCreateInfo& windowCrea
     return { (addptr)windowHandle };
 }
 
+void Aurora::Platform::closeWindow(Window& window)
+{
+    PostThreadMessageW(mainThreadId, WM_CLOSE, (WPARAM)window.handle, 0);
+}
+
 Aurora::i32 Aurora::Platform::getWindowCount()
 {
     int windowCount = 0;

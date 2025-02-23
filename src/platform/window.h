@@ -21,6 +21,8 @@ namespace Aurora
 
 		Window createWindow(const WindowCreateInfo& windowCreateInfo);
 
+		void closeWindow(Window& window);
+
 		i32 getWindowCount();
 	}
 
